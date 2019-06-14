@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                background-image: url("stockmarket.jpg");
+                margin: 0;
+            }
+
+            .header {
+                background-color: #f1f1f1;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .topnav {
+                overflow: hidden;
+                background-color: #333;
+            }
+
+            .topnav a {
+                float: left;
+                display: block;
+                color: #f2f2f2;
+                text-align: center;
+                padding: 20px 16px;
+                text-decoration: none;
+            }
+
+            .column {
+                float: left;
+                padding: 10px;
+            }
+
+            .column.side {
+                width: 25%;
+            }
+
+            .column.middle {
+                width: 50%;
+            }
+
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            @media screen and (max-width: 600px) {
+                .column.side, .column.middle {
+                    width: 100%;
+                }
+            }
+        
+            .card {
+                background-color:cyan;
+                padding: 10px;
+                margin-right:115px;
+                margin-bottom:115px;
+                display:inline-block;
+                border-radius:5px;
+                box-shadow:2px 2px 2px black;
+                width:200px;
+            }
+
+            .card1 {
+                background-color:red;
+                padding: 10px;
+                margin-right:115px;
+                margin-bottom:115px;
+                display:inline-block;
+                border-radius:5px;
+                box-shadow:2px 2px 2px black;
+                width:200px;
+                text-align: center;
+                color: white;
+            }
+
+            .card2 {
+                background-color:greenyellow;
+                padding: 10px;
+                margin-right:115px;
+                margin-bottom:115px;
+                display:inline-block;
+                border-radius:5px;
+                box-shadow:2px 2px 2px black;
+                width:200px;
+                text-align: center;
+                color: black;
+            }
+
+            .button {
+                background-color: White;
+                border: 2px solid #e7e7e7;
+                color: black;
+                padding: 16px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                -webkit-transition-duration: 0.4s; /* Safari */
+                transition-duration: 0.4s;
+                cursor: pointer;
+
+            }
+            .button1{
+                background-color: White;
+                border: 2px solid #e7e7e7;
+                color: black;
+                padding: 16px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                -webkit-transition-duration: 0.4s; /* Safari */
+                transition-duration: 0.4s;
+                cursor: pointer;
+                border-radius: 50%;
+            }
+
+
+            .button:hover {background-color: #e7e7e7;}
+                body {
+                    font-family: Arial, Helvetica, sans-serif;
+            }
+
+            .button1:hover {background-color: #e7e7e7;}
+                body {
+                    font-family: Arial, Helvetica, sans-serif;
+            }
+
+            p.y{
+                font: italic bold  12px/30px Georgia, serif;
+            }
+
+        </style>
+        
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+            
+        <script>
+            var data;
+            var data2;
+            
+            function getData(){
+            
+                $.get("http://10.79.164.139:8500/stock", function(results){
+                    data = JSON.parse(results);
+                    //document.write(data);
+                });
+
+                $.get("http://10.79.164.139:8500/stockpart2", function(results2){
+                    data2 = JSON.parse(results2);
+                    //document.write(data);
+                });
+            }
+            
+            function getInfo(){
+                var build2="";
+                var output2 = document.getElementById("output");
+                for(var i=0;i<data.length;i++){
+                    build2 +="<div class='card1'><h1>" + data[i].CompanyName + "</h1><h1>"+ data[i].Abbreviation + 
+                    "</h1><p class = 'y'>Start : " + data[i].Start + "</p><p class = 'y'>End : " + data[i].End + 
+                    "</p><p class = 'y'>Price : " + data[i].Price + "</p><p class = 'y'>Percent : "
+                     + data[i].Percent + "</p><p class = 'y'>Gain : " + data[i].Gain + "</p></div>";
+                }
+                output.innerHTML=build2;
+            }
+
+            function getCompany(){
+                var build ="";
+                var output = document.getElementById("output");
+                for (var i=0; i<data.length; i++){
+                    build+= "<input type='button' class='card' onclick='getInfo()' value='" + data[i].CompanyName + "'>";
+                }
+                output.innerHTML = build;
+            }
+
+            function getInfo2(){
+                var build3="";
+                var output3 = document.getElementById("output");
+                for(var i=0;i<data2.length;i++){
+                   build3 +="<div class='card2'><h1>"+ data2[i].Abbreviation +"</h1><p class = 'y'>Monthly High : " 
+                   + data2[i].Monthlyhigh + "</p><p class = 'y'>Monthly Low : " + data2[i].Monthlylow + 
+                   "</p><p class = 'y'>Phone : " + data2[i].Phone + "</p><p class = 'y'>Founder : " 
+                   + data2[i].Founder + "</p></div>";;
+                }
+                output.innerHTML=build3;
+            }
+        
+        </script>
+
+        <div class="header">
+            <h1>StockMarket</h1>
+            <p>April to May</p>
+        </div>
+
+        <div class="topnav">
+        <input type="button" class="button button1" onclick="getCompany()" value="Company Name">
+        <input type="button" class="button button" onclick="getInfo()" value="Stocks">
+        <input type="button" class="button button" onclick="getInfo2()" value="Company Info">
+
+        <a href="#"></a>
+        <a href="#"></a>
+        
+        </div>
+
+        <div class="row">
+        <div class="column side">
+        </div>
+        
+        <div class="column middle">
+            
+        </div>
+        
+        <div class="column side">
+            
+        </div>
+        </div>
+
+        <body onload="getData()">
+            
+            <div id="output"></div>
+            <div id="output2"></div>
+            <div id="output3"></div>
+        
+        </body>
+
+</html>
